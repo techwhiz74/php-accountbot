@@ -1,19 +1,170 @@
 <?php
-session_start(); 
-if (empty($_SESSION['SESSION_EMAIL'])) {
-    header("Location: login.php");
-    die();
-}
-     ?>
+session_start();
+include './system/config.php';
 
-     <!DOCTYPE html>
-     <html lang="en">
-     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-     </head>
-     <body>
-        hi
-     </body>
-     </html>
+// Check if the connection was successful
+if ($conn->connect_error) {
+   die("Connection failed: " . $conn->connect_error);
+}
+
+// Pagination logic
+$limit = 10; // Number of records per page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
+$offset = ($page - 1) * $limit; // Offset for SQL query
+
+// Prepare the SQL statement with LIMIT and OFFSET
+$orders = $conn->prepare('SELECT id, total, paid, created_date FROM random_urls LIMIT ?, ?');
+$orders->bind_param("ii", $offset, $limit); // Bind parameters
+
+if ($orders) {
+   $orders->execute();
+   $result = $orders->get_result();
+   $orders_data = $result->fetch_all(MYSQLI_ASSOC);
+   $orders->close();
+} else {
+   echo ("No Order");
+}
+
+// Get total number of records for pagination
+$total_orders_result = $conn->query('SELECT COUNT(*) as total FROM random_urls');
+$total_orders = $total_orders_result->fetch_assoc()['total'];
+$total_pages = ceil($total_orders / $limit); // Calculate total pages
+
+$conn->close();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Payment Plans</title>
+   <link rel="stylesheet" href="./assets/explore.css">
+   <link rel="stylesheet" href="./assets/nav.css">
+   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+   <link rel="stylesheet" href="./buy/products.css">
+   <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+   <style>
+      .box {
+         display: inline-block;
+         margin: 10px;
+      }
+
+      .circle {
+         border-radius: 50%;
+         width: 20px;
+         height: 20px;
+         background: #ccc;
+         display: inline-block;
+         margin-right: 5px;
+      }
+
+      table {
+         width: 100%;
+         border-collapse: collapse;
+         margin-top: 20px;
+      }
+
+      th,
+      td {
+         border: 1px solid #ddd;
+         padding: 8px;
+         text-align: left;
+      }
+
+      th {
+         background-color: #f2f2f2;
+      }
+
+      .pagination {
+         margin-top: 20px;
+         display: flex;
+         justify-content: center;
+      }
+
+      .pagination a {
+         margin: 0 5px;
+         text-decoration: none;
+         padding: 10px 15px;
+         border: 1px solid #007bff;
+         border-radius: 5px;
+         color: #007bff;
+         transition: background-color 0.3s, color 0.3s;
+      }
+
+      .pagination a:hover {
+         background-color: #007bff;
+         color: white;
+      }
+
+      .pagination a.active {
+         background-color: #007bff;
+         color: white;
+         font-weight: bold;
+      }
+   </style>
+</head>
+
+<body>
+   <div class="product-container">
+      <div class="card">
+         <div class="info">
+            <h1>Orders</h1>
+            <table>
+               <tr>
+                  <th>#</th>
+                  <th>ID</th>
+                  <th>Total</th>
+                  <th>Paid</th>
+                  <th>Created</th> <!-- Update header for created_at -->
+                  <th><i class="fa-solid fa-rotate"></i></th>
+               </tr>
+               <?php if (!empty($orders_data)) : ?>
+                  <?php $counter = $offset + 1; ?>
+                  <?php foreach ($orders_data as $order) : ?>
+                     <tr>
+                        <td><?php echo htmlspecialchars($counter++); ?></td>
+                        <td><?php echo htmlspecialchars($order['id']); ?></td>
+                        <td>$<?php echo htmlspecialchars($order['total']); ?></td>
+                        <td><?php echo htmlspecialchars($order['paid']); ?></td>
+                        <td>
+                           <?php
+                           // Format the created_at date
+                           $date = new DateTime($order['created_date']);
+                           echo htmlspecialchars($date->format('d.m.Y H:i'));
+                           ?>
+                        </td> <!-- Display created_at -->
+                        <td><a href="#"><i class="fa-solid fa-circle-info"></i></a></td>
+                     </tr>
+                  <?php endforeach; ?>
+               <?php else : ?>
+                  <tr>
+                     <td colspan="6">No orders found.</td>
+                  </tr>
+               <?php endif; ?>
+            </table>
+
+            <!-- Pagination Links -->
+            <div class="pagination">
+               <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
+                  <a href="?page=<?php echo $i; ?>" class="<?php echo ($i == $page) ? 'active' : ''; ?>">
+                     <?php echo $i; ?>
+                  </a>
+               <?php endfor; ?>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <?php require_once './menu.php'; ?>
+
+   <?php if (isset($error_message)) : ?>
+      <div class="error-message"><?php echo $error_message; ?></div>
+   <?php endif; ?>
+</body>
+
+</html>

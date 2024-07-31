@@ -7,7 +7,7 @@
     font-family: "League Spartan", sans-serif;
 }
 .product-container{
-    min-height: 100vh;
+    margin-top: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,7 +19,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 800px;
+    width: 1200px;
     flex-direction: column;
 }
 
@@ -123,8 +123,7 @@
     width: 80%;
     background-color: #fff;
     z-index: 0;
-    padding: 0px 40px;
-    padding-bottom: 25px;
+    padding: 40px;
     box-shadow: 15px 0 35px rgba(0, 0, 0, 0.1),
     0 -15px 35px rgba(0, 0, 0, 0.1),
     0 15px 35px rgba(0, 0, 0, 0.1);
@@ -328,10 +327,20 @@
   #one:checked ~ label.first,
   #two:checked ~ label.second,
   #three:checked ~ label.third,
-  #four:checked ~ label.last .circle{
+  #four:checked ~ label.last{
     border-color: #de1fea;
     background: #fdecff;
   }
+
+  #one-method:checked ~ label.first,
+  #two-method:checked ~ label.second,
+  #three-method:checked ~ label.third,
+  #four-method:checked ~ label.four,
+  #five-method:checked ~ label.last {
+    border-color: #de1fea;
+    background: #fdecff;
+  }
+
   .card  label.box:hover{
     background: #ffe3fc;
   }
@@ -354,6 +363,16 @@
     border-color: #de1fea;
     background: #fff;
   }
+
+  #one-method:checked ~ label.first .circle,
+  #two-method:checked ~ label.second .circle,
+  #three-method:checked ~ label.third .circle,
+  #four-method:checked ~ label.four .circle,
+  #five-method:checked ~ label.last .circle{
+    border-color: #de1fea;
+    background: #fff;
+  }
+
   .card  label.box .plan{
     display: flex;
     width: 100%;
@@ -361,6 +380,20 @@
   }
   .card input[type="radio"]{
     display: none;
+  }
+
+  table tr td, table tr th {
+    border: none;
+  }
+  table, table tr {
+    border: 1px solid #ccc;
+  }
+
+  table tr {
+    height: 50px;
+  }
+  table tr:hover {
+    background-color: #eee;
   }
 
 

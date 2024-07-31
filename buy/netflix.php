@@ -40,8 +40,7 @@ session_start();
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.14.0/css/all.css">
         <div class="selectcard">
           <div class="content">
-            <form action="random_payment" method="POST">
-              <input type="radio" name="plan" value="4.99" checked>
+            <form action="add_order" method="POST">
               <input type="radio" name="plan" id="one" value="4.99" checked>
               <input type="radio" name="plan" id="two" value="9.99">
               <input type="radio" name="plan" id="three" value="14.99">

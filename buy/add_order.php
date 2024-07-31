@@ -6,10 +6,8 @@ function generateRandomString($length = 32) {
     return bin2hex(random_bytes($length / 2));
 }
 
-
 // Check if form is submitted and get the selected plan
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    echo($_POST);
     if (isset($_POST['plan'])) {
         $selectedPlan = $_POST['plan'];
         
@@ -22,12 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         // Prepare and bind
-        $stmt = $conn->prepare("INSERT INTO random_urls (id, total, paid) VALUES (?, ?, 'UNPAID')");
+        $stmt = $conn->prepare("INSERT INTO random_urls (id, total, paid, created_date, updated_date) VALUES (?, ?, 'UNPAID', NOW(), NOW())");
         $stmt->bind_param("sd", $randomUrl, $selectedPlan);
         
         if ($stmt->execute()) {
             // Redirect to the new random URL page
-            header("Location: /buy/redirect.php?id=$randomUrl");
+            header("Location: /buy/order_pay.php?id=$randomUrl");
             exit();
         } else {
             echo "Error: " . $stmt->error;
