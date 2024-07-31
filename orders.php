@@ -4,7 +4,7 @@ include './system/config.php';
 
 // Check if the connection was successful
 if ($conn->connect_error) {
-   die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 
 // Pagination logic
@@ -12,17 +12,21 @@ $limit = 10; // Number of records per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
 $offset = ($page - 1) * $limit; // Offset for SQL query
 
-// Prepare the SQL statement with LIMIT and OFFSET
-$orders = $conn->prepare('SELECT id, total, paid, created_date FROM random_urls LIMIT ?, ?');
+// Sorting logic
+$sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'DESC'; // Default sort order
+$new_sort_order = $sort_order === 'ASC' ? 'DESC' : 'ASC'; // Toggle sort order
+
+// Prepare the SQL statement with LIMIT, OFFSET, and ORDER BY
+$orders = $conn->prepare('SELECT id, total, paid, created_date FROM random_urls ORDER BY created_date ' . $sort_order . ' LIMIT ?, ?');
 $orders->bind_param("ii", $offset, $limit); // Bind parameters
 
 if ($orders) {
-   $orders->execute();
-   $result = $orders->get_result();
-   $orders_data = $result->fetch_all(MYSQLI_ASSOC);
-   $orders->close();
+    $orders->execute();
+    $result = $orders->get_result();
+    $orders_data = $result->fetch_all(MYSQLI_ASSOC);
+    $orders->close();
 } else {
-   echo ("No Order");
+    echo ("No Order");
 }
 
 // Get total number of records for pagination
@@ -106,6 +110,12 @@ $conn->close();
          color: white;
          font-weight: bold;
       }
+      #reload-icon {
+         cursor: pointer;
+      }
+      a {
+         text-decoration: none;
+      }
    </style>
 </head>
 
@@ -120,8 +130,12 @@ $conn->close();
                   <th>ID</th>
                   <th>Total</th>
                   <th>Paid</th>
-                  <th>Created</th> <!-- Update header for created_at -->
-                  <th><i class="fa-solid fa-rotate"></i></th>
+                  <th>
+                     <a href="?page=<?php echo $page; ?>&sort_order=<?php echo $new_sort_order; ?>">
+                        Created <i class="fa-solid fa-sort"></i>
+                     </a>
+                  </th>
+                  <th><i class="fa-solid fa-rotate reload-icon" id="reload-icon"></i></th>
                </tr>
                <?php if (!empty($orders_data)) : ?>
                   <?php $counter = $offset + 1; ?>
@@ -137,8 +151,8 @@ $conn->close();
                            $date = new DateTime($order['created_date']);
                            echo htmlspecialchars($date->format('d.m.Y H:i'));
                            ?>
-                        </td> <!-- Display created_at -->
-                        <td><a href="#"><i class="fa-solid fa-circle-info"></i></a></td>
+                        </td>
+                        <td><a href="/buy/order_info.php?id=<?php echo htmlspecialchars($order['id']); ?>"><i class="fa-solid fa-circle-info"></i></a></td>
                      </tr>
                   <?php endforeach; ?>
                <?php else : ?>
@@ -151,7 +165,7 @@ $conn->close();
             <!-- Pagination Links -->
             <div class="pagination">
                <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
-                  <a href="?page=<?php echo $i; ?>" class="<?php echo ($i == $page) ? 'active' : ''; ?>">
+                  <a href="?page=<?php echo $i; ?>&sort_order=<?php echo $sort_order; ?>" class="<?php echo ($i == $page) ? 'active' : ''; ?>">
                      <?php echo $i; ?>
                   </a>
                <?php endfor; ?>
@@ -165,6 +179,12 @@ $conn->close();
    <?php if (isset($error_message)) : ?>
       <div class="error-message"><?php echo $error_message; ?></div>
    <?php endif; ?>
+
+   <script>
+      document.getElementById('reload-icon').addEventListener('click', function() {
+         location.reload();
+      });
+   </script>
 </body>
 
 </html>

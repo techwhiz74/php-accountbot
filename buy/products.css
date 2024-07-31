@@ -395,6 +395,16 @@
   table tr:hover {
     background-color: #eee;
   }
+  .payment {
+    background-color: #007bff;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
 
 
 

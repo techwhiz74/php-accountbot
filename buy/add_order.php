@@ -9,7 +9,10 @@ function generateRandomString($length = 32) {
 // Check if form is submitted and get the selected plan
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['plan'])) {
+
         $selectedPlan = $_POST['plan'];
+        $product_qty = $_POST['product-qty'];
+        $total = $selectedPlan * $product_qty;
         
         // Generate the random URL
         $randomUrl = generateRandomString();
@@ -21,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         // Prepare and bind
         $stmt = $conn->prepare("INSERT INTO random_urls (id, total, paid, created_date, updated_date) VALUES (?, ?, 'UNPAID', NOW(), NOW())");
-        $stmt->bind_param("sd", $randomUrl, $selectedPlan);
+        $stmt->bind_param("sd", $randomUrl, $total);
         
         if ($stmt->execute()) {
             // Redirect to the new random URL page

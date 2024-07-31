@@ -11,7 +11,7 @@ if (isset($_GET['id'])) {
     $randomUrl = $_GET['id'];
 
     // Prepare and execute the query
-    $stmt = $conn->prepare("SELECT total, paid FROM random_urls WHERE id = ?");
+    $stmt = $conn->prepare("SELECT total, paid, created_date FROM random_urls WHERE id = ?");
     if ($stmt) {
         $stmt->bind_param("s", $randomUrl);
         $stmt->execute();
@@ -19,7 +19,7 @@ if (isset($_GET['id'])) {
 
         if ($stmt->num_rows > 0) {
             // Fetch the data
-            $stmt->bind_result($total, $paid);
+            $stmt->bind_result($total, $paid, $created_date);
             $stmt->fetch();
         } else {
             $error_message = "URL not found.";
@@ -63,6 +63,7 @@ $conn->close();
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="products.css">
     <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .box {
             display: inline-block;
@@ -94,6 +95,12 @@ $conn->close();
         th {
             background-color: #f2f2f2;
         }
+
+        .order-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0;
+        }
     </style>
 </head>
 
@@ -102,14 +109,22 @@ $conn->close();
         <div style="display: grid; gap: 20px;">
             <div class="card">
                 <div class="info">
-                    <div class="shoeName" style="margin: 2rem 0;">
+                    <div class="shoeName order-info">
                         <h1>UNPAID</h1>
+                        <a href="/buy/order_pay.php?id=<?php echo htmlspecialchars($randomUrl); ?>"><button class="payment"><i class="fa-solid fa-credit-card"></i> Process Payment</button></a>
                     </div>
                     <h3>ID: <?php echo htmlspecialchars($randomUrl); ?></h3>
-                    <h3 style="padding: 1rem 0;">Total: $<?php echo htmlspecialchars($total); ?></h2>
+                    <h3 style="padding: 1rem 0;">Total: $<?php echo htmlspecialchars($total); ?></h3>
+                    <h3>Created:
+                        <?php
+                        // Format the created_at date
+                        $date = new DateTime($created_date);
+                        echo htmlspecialchars($date->format('d.m.Y H:i'));
+                        ?>
+                    </h3>
                 </div>
             </div>
-            <div class="card">
+            <!-- <div class="card">
                 <div class="info">
                     <table>
                         <tr>
@@ -154,7 +169,7 @@ $conn->close();
                         <?php endif; ?>
                     </table>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 

@@ -43,11 +43,12 @@ $conn->close();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Plans</title>
-    <link rel="stylesheet" href="assets/explore.css">
+    <link rel="stylesheet" href="../assets/explore.css">
     <link rel="stylesheet" href="../assets/nav.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="products.css">
     <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .box { display: inline-block; margin: 10px; }
         .circle { border-radius: 50%; width: 20px; height: 20px; background: #ccc; display: inline-block; margin-right: 5px; }
@@ -118,7 +119,7 @@ $conn->close();
                                 <img src="../images/balance.png" alt="PayPal">
                             </label>
                             <div class="buy-price">
-                                <button type="submit" class="buy">Continue to Payment<span class="fa fa-arrow-right ml-2 mr-1"></span></button>
+                                <button type="submit" class="payment">Continue to Payment <span class="fa fa-arrow-right ml-2 mr-1"></span></button>
                                 <a href="/buy/order_info.php?id=<?php echo htmlspecialchars($randomUrl); ?>" style="text-decoration: none;">Cancel and go back to order</a>
                             </div>
                         </form>
