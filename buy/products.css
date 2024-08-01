@@ -76,9 +76,10 @@
 .productlogo{
     position: absolute;
     width: 314px;
-
     border-radius: 10px;
 }
+
+
 
 .share{
     position: absolute;

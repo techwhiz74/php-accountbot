@@ -11,7 +11,7 @@ if (isset($_GET['id'])) {
     $randomUrl = $_GET['id'];
 
     // Prepare and execute the query
-    $stmt = $conn->prepare("SELECT total, paid, created_date FROM random_urls WHERE id = ?");
+    $stmt = $conn->prepare("SELECT total, paid, created_date FROM orders WHERE id = ?");
     if ($stmt) {
         $stmt->bind_param("s", $randomUrl);
         $stmt->execute();
@@ -30,7 +30,7 @@ if (isset($_GET['id'])) {
         $error_message = "Error preparing statement.";
     }
 
-    $orders = $conn->prepare('SELECT id, total, paid FROM random_urls');
+    $orders = $conn->prepare('SELECT id, total, paid FROM orders');
     if ($orders) {
         $orders->execute();
         $result = $orders->get_result();

@@ -17,7 +17,7 @@ $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'DESC'; // Defa
 $new_sort_order = $sort_order === 'ASC' ? 'DESC' : 'ASC'; // Toggle sort order
 
 // Prepare the SQL statement with LIMIT, OFFSET, and ORDER BY
-$orders = $conn->prepare('SELECT id, total, paid, created_date FROM random_urls ORDER BY created_date ' . $sort_order . ' LIMIT ?, ?');
+$orders = $conn->prepare('SELECT id, total, paid, created_date FROM orders ORDER BY created_date ' . $sort_order . ' LIMIT ?, ?');
 $orders->bind_param("ii", $offset, $limit); // Bind parameters
 
 if ($orders) {
@@ -30,7 +30,7 @@ if ($orders) {
 }
 
 // Get total number of records for pagination
-$total_orders_result = $conn->query('SELECT COUNT(*) as total FROM random_urls');
+$total_orders_result = $conn->query('SELECT COUNT(*) as total FROM orders');
 $total_orders = $total_orders_result->fetch_assoc()['total'];
 $total_pages = ceil($total_orders / $limit); // Calculate total pages
 

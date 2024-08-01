@@ -1,5 +1,7 @@
 <?php
 session_start();
+require '../vendor/autoload.php'; // Make sure to include the Composer autoloader
+
 include '../system/config.php';
 
 // Check if the connection was successful
@@ -11,7 +13,7 @@ if (isset($_GET['id'])) {
     $randomUrl = $_GET['id'];
 
     // Prepare and execute the query
-    $stmt = $conn->prepare("SELECT total, paid FROM random_urls WHERE id = ?");
+    $stmt = $conn->prepare("SELECT total, paid FROM orders WHERE id = ?");
     if ($stmt) {
         $stmt->bind_param("s", $randomUrl);
         $stmt->execute();

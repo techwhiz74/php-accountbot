@@ -3,4 +3,5 @@ RewriteCond %{THE_REQUEST} /([^.]+)\.php [NC]
 RewriteRule ^ /%1 [NC,L,R]
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^ %{REQUEST_URI}.php [NC,L] 
+# RewriteRule ^order/([a-zA-Z0-9-]+)/pay$ buy/order_pay.php?id=$1 [L]
 
