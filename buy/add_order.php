@@ -59,11 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($stmt->execute()) {
             // Prepare and bind the insert for each product quantity
-            $orderStmt = $conn->prepare("INSERT INTO `order` (id, orders_id, cost, paid, created_date, updated_date) VALUES (?, ?, ?, 'UNPAID', NOW(), NOW())");
+            $orderStmt = $conn->prepare("INSERT INTO `order` (id, orders_id, user_id, cost, paid, created_date, updated_date) VALUES (?, ?, ?, ?, 'UNPAID', NOW(), NOW())");
 
             for ($i = 0; $i < $product_qty; $i++) {
                 $orderRandomUrl = generateRandomUUID();
-                $orderStmt->bind_param("ssd", $orderRandomUrl, $randomUrl, $selectedPlan);
+                $orderStmt->bind_param("ssdd", $orderRandomUrl, $randomUrl, $userId, $selectedPlan);
 
                 if (!$orderStmt->execute()) {
                     echo "Error inserting into `order`: " . $orderStmt->error;
@@ -74,8 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
             $orderStmt->close();
-            
-            header("Location: /buy/order_pay.php?id=$randomUrl");
+            header("Location: /buy/order.php?id=$randomUrl");
             exit();
         } else {
             echo "Error inserting into orders: " . $stmt->error;

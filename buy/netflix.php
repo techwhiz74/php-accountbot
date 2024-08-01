@@ -1,7 +1,3 @@
-<?php
-session_start();
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,6 +12,7 @@ session_start();
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
   <link rel="stylesheet" href="products.css" />
   <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
@@ -40,7 +37,7 @@ session_start();
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.14.0/css/all.css">
         <div class="selectcard">
           <div class="content">
-            <form action="add_order" method="POST">
+            <form id="productForm" action="add_order" method="POST">
               <input type="radio" name="plan" id="one" value="4.99" checked>
               <input type="radio" name="plan" id="two" value="9.99">
               <input type="radio" name="plan" id="three" value="14.99">
@@ -77,7 +74,10 @@ session_start();
                 <div class="addcart">
                   <input class="product-qty" type="number" name="product-qty" min="1" value="1" style="width: 109px; text-align: center; padding: 11px; font-size: 18px; font-weight: 600; border-radius: 10px; border: 2px solid #de1fea;">
                 </div>
-                <button type="submit" class="buy">Buy Now!</button>
+                <div>
+                  <a href="#" id="cartIcon" class="buy"><i class="fa-solid fa-cart-shopping"></i></a>
+                  <button type="submit" class="buy">Buy Now!</button>
+                </div>
               </div>
             </form>
           </div>
@@ -85,6 +85,31 @@ session_start();
       </div>
     </div>
   </div>
+
+  <form id="cartForm" action="cart" method="POST" style="display: none;">
+    <input type="hidden" name="plan" id="cartPlan">
+    <input type="hidden" name="product-qty" id="cartQty">
+  </form>
+
+  <script>
+    document.getElementById('cartIcon').addEventListener('click', function(event) {
+      event.preventDefault(); // Prevent default anchor behavior
+      
+      var form = document.getElementById('productForm');
+      var cartForm = document.getElementById('cartForm');
+      
+      // Get selected plan and quantity from the main form
+      var selectedPlan = form.querySelector('input[name="plan"]:checked').value;
+      var productQty = form.querySelector('input[name="product-qty"]').value;
+      
+      // Set values to hidden form fields
+      document.getElementById('cartPlan').value = selectedPlan;
+      document.getElementById('cartQty').value = productQty;
+      
+      // Submit the hidden form
+      cartForm.submit();
+    });
+  </script>
 
   <?php require_once './menu2.php'; ?>
 </body>

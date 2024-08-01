@@ -1,40 +1,59 @@
 <?php
-session_start();
-include './system/config.php';
+   session_start();
+   include './system/config.php';
 
-// Check if the connection was successful
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+   // Check if the connection was successful
+   if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+   }
+   
+   // Fetch user ID if not set in session
+   if (!isset($_SESSION['USER_ID'])) {
+      $email = $_SESSION['SESSION_EMAIL'];
+      $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+      $stmt->bind_param("s", $email);
+      $stmt->execute();
+      $stmt->bind_result($userId);
+      $stmt->fetch();
+      $stmt->close();
+      
+      if ($userId) {
+         $_SESSION['USER_ID'] = $userId;
+      } else {
+         die("User ID not found.");
+      }
+   } else {
+      $userId = $_SESSION['USER_ID'];
+   }
 
-// Pagination logic
-$limit = 10; // Number of records per page
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
-$offset = ($page - 1) * $limit; // Offset for SQL query
+   // Pagination logic
+   $limit = 10; // Number of records per page
+   $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page
+   $offset = ($page - 1) * $limit; // Offset for SQL query
 
-// Sorting logic
-$sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'DESC'; // Default sort order
-$new_sort_order = $sort_order === 'ASC' ? 'DESC' : 'ASC'; // Toggle sort order
+   // Sorting logic
+   $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'DESC'; // Default sort order
+   $new_sort_order = $sort_order === 'ASC' ? 'DESC' : 'ASC'; // Toggle sort order
 
-// Prepare the SQL statement with LIMIT, OFFSET, and ORDER BY
-$orders = $conn->prepare('SELECT id, total, paid, created_date FROM orders ORDER BY created_date ' . $sort_order . ' LIMIT ?, ?');
-$orders->bind_param("ii", $offset, $limit); // Bind parameters
+   // Prepare the SQL statement with LIMIT, OFFSET, and ORDER BY
+   $orders = $conn->prepare('SELECT id, total, paid, created_date FROM orders WHERE user_id = ? ORDER BY created_date ' . $sort_order . ' LIMIT ?, ?');
+   $orders->bind_param("iii", $userId, $offset, $limit); // Bind parameters
 
-if ($orders) {
-    $orders->execute();
-    $result = $orders->get_result();
-    $orders_data = $result->fetch_all(MYSQLI_ASSOC);
-    $orders->close();
-} else {
-    echo ("No Order");
-}
+   if ($orders) {
+      $orders->execute();
+      $result = $orders->get_result();
+      $orders_data = $result->fetch_all(MYSQLI_ASSOC);
+      $orders->close();
+   } else {
+      echo ("No Order");
+   }
 
-// Get total number of records for pagination
-$total_orders_result = $conn->query('SELECT COUNT(*) as total FROM orders');
-$total_orders = $total_orders_result->fetch_assoc()['total'];
-$total_pages = ceil($total_orders / $limit); // Calculate total pages
+   // Get total number of records for pagination
+   $total_orders_result = $conn->query('SELECT COUNT(*) as total FROM orders');
+   $total_orders = $total_orders_result->fetch_assoc()['total'];
+   $total_pages = ceil($total_orders / $limit); // Calculate total pages
 
-$conn->close();
+   $conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -152,7 +171,7 @@ $conn->close();
                            echo htmlspecialchars($date->format('d.m.Y H:i'));
                            ?>
                         </td>
-                        <td><a href="/buy/order_info.php?id=<?php echo htmlspecialchars($order['id']); ?>"><i class="fa-solid fa-circle-info"></i></a></td>
+                        <td><a href="/buy/info.php?id=<?php echo htmlspecialchars($order['id']); ?>" style="color: #007bff;"><i class="fa-solid fa-circle-info"></i></a></td>
                      </tr>
                   <?php endforeach; ?>
                <?php else : ?>

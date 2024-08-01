@@ -122,7 +122,7 @@ $conn->close();
                             </label>
                             <div class="buy-price">
                                 <button type="submit" class="payment">Continue to Payment <span class="fa fa-arrow-right ml-2 mr-1"></span></button>
-                                <a href="/buy/order_info.php?id=<?php echo htmlspecialchars($randomUrl); ?>" style="text-decoration: none;">Cancel and go back to order</a>
+                                <a href="/buy/info.php?id=<?php echo htmlspecialchars($randomUrl); ?>" style="text-decoration: none;">Cancel and go back to order</a>
                             </div>
                         </form>
                     </div>

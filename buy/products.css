@@ -396,7 +396,7 @@
   table tr:hover {
     background-color: #eee;
   }
-  .payment {
+.payment {
     background-color: #007bff;
     border: none;
     padding: 12px;
@@ -406,6 +406,7 @@
     font-weight: bold;
     color: white;
 }
+
 
 
 

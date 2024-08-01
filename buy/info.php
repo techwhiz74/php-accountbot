@@ -30,21 +30,19 @@ if (isset($_GET['id'])) {
         $error_message = "Error preparing statement.";
     }
 
-    $orders = $conn->prepare('SELECT id, total, paid FROM orders');
-    if ($orders) {
-        $orders->execute();
-        $result = $orders->get_result();
-        $orders_data = $result->fetch_all(MYSQLI_ASSOC);
-        $orders->close();
+    $orderStmt = $conn->prepare("SELECT id, cost FROM `order` WHERE orders_id = ?");
+    if ($orderStmt) {
+        $orderStmt->bind_param("s", $randomUrl);
+        $orderStmt->execute();
+        $result = $orderStmt->get_result();
+        $orderStmt_data = $result->fetch_all(MYSQLI_ASSOC);
+        $orderStmt->close();
     } else {
         $error_message = "Error preparing statement.";
     }
 } else {
     $error_message = "No URL specified.";
 }
-
-
-
 
 $conn->close();
 ?>
@@ -111,10 +109,10 @@ $conn->close();
                 <div class="info">
                     <div class="shoeName order-info">
                         <h1>UNPAID</h1>
-                        <a href="/buy/order_pay.php?id=<?php echo htmlspecialchars($randomUrl); ?>"><button class="payment"><i class="fa-solid fa-credit-card"></i> Process Payment</button></a>
+                        <a href="/buy/order.php?id=<?php echo htmlspecialchars($randomUrl); ?>"><button class="payment"><i class="fa-solid fa-credit-card"></i> Process Payment</button></a>
                     </div>
                     <h3>ID: <?php echo htmlspecialchars($randomUrl); ?></h3>
-                    <h3 style="padding: 1rem 0;">Total: $<?php echo htmlspecialchars($total); ?></h3>
+                    <h3 style="padding: 1rem 0;">Total: <span style="color: #28a745;">$<?php echo htmlspecialchars($total); ?></span></h3>
                     <h3>Created:
                         <?php
                         // Format the created_at date
@@ -124,7 +122,7 @@ $conn->close();
                     </h3>
                 </div>
             </div>
-            <!-- <div class="card">
+            <div class="card">
                 <div class="info">
                     <table>
                         <tr>
@@ -132,25 +130,26 @@ $conn->close();
                             <th>Item</th>
                             <th>Expires</th>
                             <th>Price</th>
+                            <th></th>
                         </tr>
-                        <?php if (!empty($orders_data)) : ?>
-                            <?php foreach ($orders_data as $order) : ?>
+                        <?php if (!empty($orderStmt_data)) : ?>
+                            <?php foreach ($orderStmt_data as $order) : ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($order['id']); ?></td>
-                                    <td>
+                                    <td style="color: #007bff;">
                                         <?php
-                                        switch ($order['total']) {
+                                        switch ($order['cost']) {
                                             case 4.99:
-                                                echo "1 Month";
+                                                echo "NETFLIX - 1 Month";
                                                 break;
                                             case 9.99:
-                                                echo "3 Months";
+                                                echo "NETFLIX - 3 Months";
                                                 break;
                                             case 14.99:
-                                                echo "6 Months";
+                                                echo "NETFLIX - 6 Months";
                                                 break;
                                             case 19.99:
-                                                echo "1 Year";
+                                                echo "NETFLIX - 1 Year";
                                                 break;
                                             default:
                                                 echo "Unknown Duration";
@@ -158,10 +157,18 @@ $conn->close();
                                         }
                                         ?>
                                     </td>
-                                    <td><?php echo htmlspecialchars($order['paid']); ?></td>
-                                    <td>$<?php echo htmlspecialchars($order['total']); ?></td>
+                                    <td>Unpaid</td>
+                                    <td style="color: #28a745;">$<?php echo htmlspecialchars($order['cost']); ?></td>
+                                    <td><a href="/buy/subscription.php?id=<?php echo htmlspecialchars($order['id']); ?>" style="color: #007bff;"><i class="fa-solid fa-circle-info"></i></a></td>
                                 </tr>
                             <?php endforeach; ?>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td style="color: #007bff;"><br>Subtotal:<br><br>Total:<br><br></td>
+                                <td style="color: #28a745; font-weight:bold;"><br>$<?php echo htmlspecialchars($total); ?><br><br>$<?php echo htmlspecialchars($total); ?><br><br></td>
+                                <td></td>
+                            </tr>
                         <?php else : ?>
                             <tr>
                                 <td colspan="3">No orders found.</td>
@@ -169,7 +176,7 @@ $conn->close();
                         <?php endif; ?>
                     </table>
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
 

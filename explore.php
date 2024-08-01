@@ -170,7 +170,6 @@
 						<strong>Shoes</strong>
 						<small>Buy now</small>
 					</div>
-
 				</li>
 			</ul>
 		</div>

@@ -7,10 +7,30 @@ if ($conn->connect_error) {
    die("Connection failed: " . $conn->connect_error);
 }
 
+// Fetch user ID if not set in session
+if (!isset($_SESSION['USER_ID'])) {
+   $email = $_SESSION['SESSION_EMAIL'];
+   $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+   $stmt->bind_param("s", $email);
+   $stmt->execute();
+   $stmt->bind_result($userId);
+   $stmt->fetch();
+   $stmt->close();
+   
+   if ($userId) {
+      $_SESSION['USER_ID'] = $userId;
+   } else {
+      die("User ID not found.");
+   }
+} else {
+   $userId = $_SESSION['USER_ID'];
+}
+
 // Prepare the SQL statement with LIMIT, OFFSET, and ORDER BY
-$orders = $conn->prepare('SELECT id, orders_id, cost FROM `order`');
+$orders = $conn->prepare('SELECT id, orders_id, cost FROM `order` WHERE user_id = ?');
 
 if ($orders) {
+   $orders->bind_param("i", $userId); // Bind parameters
    $orders->execute();
    $result = $orders->get_result();
    $orders_data = $result->fetch_all(MYSQLI_ASSOC);
@@ -101,7 +121,7 @@ $conn->close();
                <p>Unpaid</p><br>
             </div>
             <div>
-               <button class="payment" style="width: 100%;">Get Account</button>
+               <a href="/buy/subscription.php?id=<?php echo htmlspecialchars($order['id']); ?>"><button class="payment" style="width: 100%;">Get Account</button></a>
             </div>
          </div>
       <?php endforeach; ?>

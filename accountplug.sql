@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : php-task
+ Source Server         : accountbot
  Source Server Type    : MySQL
  Source Server Version : 100432
  Source Host           : localhost:3306
@@ -11,11 +11,28 @@
  Target Server Version : 100432
  File Encoding         : 65001
 
- Date: 31/07/2024 15:33:52
+ Date: 01/08/2024 21:43:23
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for cart
+-- ----------------------------
+DROP TABLE IF EXISTS `cart`;
+CREATE TABLE `cart`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NULL DEFAULT NULL,
+  `cost` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `quantity` int NULL DEFAULT NULL,
+  `total` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 79 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of cart
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for failed_jobs
@@ -31,7 +48,7 @@ CREATE TABLE `failed_jobs`  (
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `failed_jobs_uuid_unique`(`uuid` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of failed_jobs
@@ -46,7 +63,7 @@ CREATE TABLE `migrations`  (
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of migrations
@@ -58,6 +75,58 @@ INSERT INTO `migrations` VALUES (4, '2019_08_19_000000_create_failed_jobs_table'
 INSERT INTO `migrations` VALUES (5, '2019_12_14_000001_create_personal_access_tokens_table', 1);
 
 -- ----------------------------
+-- Table structure for order
+-- ----------------------------
+DROP TABLE IF EXISTS `order`;
+CREATE TABLE `order`  (
+  `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `orders_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` int NOT NULL,
+  `cost` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `paid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `created_date` datetime NULL DEFAULT NULL,
+  `updated_date` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of order
+-- ----------------------------
+INSERT INTO `order` VALUES ('01e77b11-7f18-4261-b3b1-7c0f115825ff', '2e6f9bb7-f239-4528-af64-be904a79ce64', 32, '14.99', 'UNPAID', '2024-08-01 21:23:02', '2024-08-01 21:23:02');
+INSERT INTO `order` VALUES ('0cbb8326-f60a-4f32-a1de-f98f55bae1f6', '2e6f9bb7-f239-4528-af64-be904a79ce64', 32, '9.99', 'UNPAID', '2024-08-01 21:23:02', '2024-08-01 21:23:02');
+INSERT INTO `order` VALUES ('1f574383-4385-44b3-9331-6e816e6383e2', '2e6f9bb7-f239-4528-af64-be904a79ce64', 32, '9.99', 'UNPAID', '2024-08-01 21:23:02', '2024-08-01 21:23:02');
+INSERT INTO `order` VALUES ('4e1802a0-66d1-4f2e-999d-2fb0927a75c6', 'b9ba1d00-1bf8-49a1-bb65-0ec85e64049d', 32, '9.99', 'UNPAID', '2024-08-01 21:37:40', '2024-08-01 21:37:40');
+INSERT INTO `order` VALUES ('4f7a87ad-a9f7-4d51-9735-9ff9f7006c3a', '2e6f9bb7-f239-4528-af64-be904a79ce64', 32, '14.99', 'UNPAID', '2024-08-01 21:23:02', '2024-08-01 21:23:02');
+INSERT INTO `order` VALUES ('5d6771ee-3e1b-484b-96ce-b7187294aa43', '799061b9-bb45-491c-a91c-0ca9319ea16e', 32, '9.99', 'UNPAID', '2024-08-01 21:41:27', '2024-08-01 21:41:27');
+INSERT INTO `order` VALUES ('c2fb02d3-f071-4f56-846e-413c2c8e9296', '799061b9-bb45-491c-a91c-0ca9319ea16e', 32, '9.99', 'UNPAID', '2024-08-01 21:41:27', '2024-08-01 21:41:27');
+INSERT INTO `order` VALUES ('c8ec0cf6-f48e-4d54-845b-674786aab99a', '2e6f9bb7-f239-4528-af64-be904a79ce64', 32, '14.99', 'UNPAID', '2024-08-01 21:23:02', '2024-08-01 21:23:02');
+INSERT INTO `order` VALUES ('e2aa8b08-74ec-41f6-92ec-9e68b1d4e519', 'b9ba1d00-1bf8-49a1-bb65-0ec85e64049d', 32, '9.99', 'UNPAID', '2024-08-01 21:37:40', '2024-08-01 21:37:40');
+
+-- ----------------------------
+-- Table structure for orders
+-- ----------------------------
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE `orders`  (
+  `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT ' ',
+  `user_id` int NULL DEFAULT NULL,
+  `cost` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `quantity` int NULL DEFAULT NULL,
+  `total` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `paid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `created_date` datetime NULL DEFAULT NULL,
+  `updated_date` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of orders
+-- ----------------------------
+INSERT INTO `orders` VALUES ('2e6f9bb7-f239-4528-af64-be904a79ce64', 32, NULL, NULL, '61.7025', 'UNPAID', '2024-08-01 21:23:02', '2024-08-01 21:23:02');
+INSERT INTO `orders` VALUES ('60060139-b440-4f6b-990b-ae4228f74f62', 32, NULL, NULL, '0', 'UNPAID', '2024-08-01 21:25:31', '2024-08-01 21:25:31');
+INSERT INTO `orders` VALUES ('799061b9-bb45-491c-a91c-0ca9319ea16e', 32, NULL, NULL, '18.981', 'UNPAID', '2024-08-01 21:41:27', '2024-08-01 21:41:27');
+INSERT INTO `orders` VALUES ('b9ba1d00-1bf8-49a1-bb65-0ec85e64049d', 32, NULL, NULL, '18.981', 'UNPAID', '2024-08-01 21:37:40', '2024-08-01 21:37:40');
+
+-- ----------------------------
 -- Table structure for password_reset_tokens
 -- ----------------------------
 DROP TABLE IF EXISTS `password_reset_tokens`;
@@ -66,7 +135,7 @@ CREATE TABLE `password_reset_tokens`  (
   `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`email`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of password_reset_tokens
@@ -81,7 +150,7 @@ CREATE TABLE `password_resets`  (
   `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   INDEX `password_resets_email_index`(`email` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of password_resets
@@ -105,7 +174,7 @@ CREATE TABLE `personal_access_tokens`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `personal_access_tokens_token_unique`(`token` ASC) USING BTREE,
   INDEX `personal_access_tokens_tokenable_type_tokenable_id_index`(`tokenable_type` ASC, `tokenable_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of personal_access_tokens
@@ -122,7 +191,7 @@ CREATE TABLE `random_urls`  (
   `created_date` datetime NULL DEFAULT NULL,
   `updated_date` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of random_urls
@@ -151,7 +220,7 @@ CREATE TABLE `submenu_item`  (
   `created_date` datetime NULL DEFAULT NULL,
   `updated_date` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of submenu_item
@@ -166,48 +235,18 @@ CREATE TABLE `users`  (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `AccountID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `users_email_unique`(`email` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'Hildegard Koepp', 'erin.dicki@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'f9j5Qp9BK7', '2024-01-29 11:04:37', '2024-01-29 11:04:37');
-INSERT INTO `users` VALUES (2, 'Gertrude Collier', 'samara23@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'O6dTPYfEPO', '2024-01-29 11:04:37', '2024-01-29 11:04:37');
-INSERT INTO `users` VALUES (3, 'Prof. Niko McKenzie Sr.', 'anthony58@example.com', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'iJi6pyNxpm', '2024-01-29 11:04:37', '2024-01-29 11:04:37');
-INSERT INTO `users` VALUES (4, 'Lemuel Kuvalis', 'vernie.emard@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '8hLBvXxb5C', '2024-01-29 11:04:37', '2024-01-29 11:04:37');
-INSERT INTO `users` VALUES (5, 'Baron Wuckert', 'bonita79@example.org', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'CHACS6zAxK', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (6, 'Henri King', 'raymond.stark@example.com', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TFuCgZ7SHl', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (7, 'Miss Daniella Satterfield V', 'alexandra91@example.com', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'u1YOxj1ZHP', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (8, 'Paula Towne', 'chelsie47@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'fMEzh2G8AZ', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (9, 'Prof. Lula Fadel', 'lesch.wilford@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'p7LiAbns0n', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (10, 'Rebeca Franecki II', 'paucek.loma@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '5VBmO4rXeL', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (11, 'Ms. Name Collins Jr.', 'stracke.adolphus@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'MlDvrM7JEi', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (12, 'Prof. Amir Heaney', 'ybeatty@example.com', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'JoJP1hJ9lG', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (13, 'Rubie Ullrich', 'marian30@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'pK1XcqHiTF', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (14, 'Tianna Russel', 'kemmer.leola@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'YXDl9eftbm', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (15, 'Zechariah Abshire', 'morton22@example.org', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'cdnzUPpiNc', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (16, 'Dr. Kraig Kris PhD', 'flegros@example.org', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'AIchgVBH0V', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (17, 'Milton O\'Connell', 'charlotte.kautzer@example.com', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'DeLcJeZJyL', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (18, 'Bradford Gutmann', 'russel.emmalee@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'zdYsmKkZOv', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (19, 'Ms. Lucinda Dickens', 'vickie32@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'uSxsLwoiPp', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (20, 'Rubye McLaughlin', 'mollie53@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '49DBYqakLw', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (21, 'Myra Miller', 'ihomenick@example.org', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'PPVjSAzQcy', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (22, 'Dr. Nellie Grady MD', 'vroob@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'RmrotfeSYt', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (23, 'Mrs. Simone Johnston', 'alanna.ohara@example.org', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'qLh2c0gv4d', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (24, 'Prof. Savanah Blick I', 'camille54@example.com', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'ff7N0fFRyd', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (25, 'Mr. Norwood Auer Sr.', 'rubie.bergstrom@example.org', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '1XOhHs3jnA', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (26, 'Miss Clarissa Denesik IV', 'langworth.rebekah@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'XGZPdBb8Qp', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (27, 'Prof. Edwina Monahan', 'paucek.jerrod@example.org', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'QqGDPPvQGb', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (28, 'Ms. Camylle Nicolas', 'cbraun@example.com', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'tT4nxwqou5', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (29, 'Mr. Marques Romaguera Sr.', 'rutherford.adela@example.net', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'l3GsbGmbBt', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (30, 'Prof. Joan Wisozk', 'schoen.talia@example.org', '2024-01-29 11:04:37', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '004u55zVMT', '2024-01-29 11:04:38', '2024-01-29 11:04:38');
-INSERT INTO `users` VALUES (31, 'Mark', 'markloughlingm@gmail.com', NULL, '9ad56dffcdd6ce58c1fadb12532a53a3', NULL, NULL, NULL);
+INSERT INTO `users` VALUES (32, 'Mark', 'markloughlingm@gmail.com', '9ad56dffcdd6ce58c1fadb12532a53a3', '080d8828bf02ae73e453dcce6d771435', '7a848fa4be22db6f8f0ebcd3c7c3af16', NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
