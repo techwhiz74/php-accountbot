@@ -12,6 +12,8 @@ if ($conn->connect_error) {
 if (isset($_GET['id'])) {
     $randomUrl = $_GET['id'];
 
+    $format = "/order/" . $randomUrl . "/info";
+
     // Prepare and execute the query
     $stmt = $conn->prepare("SELECT total, paid FROM orders WHERE id = ?");
     if ($stmt) {
@@ -36,6 +38,9 @@ if (isset($_GET['id'])) {
 }
 
 $conn->close();
+
+// Define base URL
+$baseUrl = "http://localhost/"; // Adjust this if your project is in a subdirectory
 ?>
 
 <!DOCTYPE html>
@@ -45,10 +50,10 @@ $conn->close();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Plans</title>
-    <link rel="stylesheet" href="../assets/explore.css">
-    <link rel="stylesheet" href="../assets/nav.css">
+    <link rel="stylesheet" href="/assets/explore.css">
+    <link rel="stylesheet" href="/assets/nav.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <link rel="stylesheet" href="products.css">
+    <link rel="stylesheet" href="/buy/products.css">
     <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -78,7 +83,7 @@ $conn->close();
                                     <span class="circle"></span>
                                     <span class="yearly">PayPal</span>
                                 </div>
-                                <img src="../images/paypal.png" alt="PayPal">
+                                <img src="/images/paypal.png" alt="PayPal">
                             </label>
                             <label for="two-method" class="box second">
                                 <div class="plan">
@@ -86,10 +91,10 @@ $conn->close();
                                     <span class="yearly">Debit/Credit, Apple Pay</span>
                                 </div>
                                 <div style="display: flex;">
-                                    <img src="../images/stripe-amex.png" alt="PayPal">
-                                    <img src="../images/stripe-discover.png" alt="PayPal">
-                                    <img src="../images/stripe-mastercard.png" alt="PayPal">
-                                    <img src="../images/stripe-visa.png" alt="PayPal">
+                                    <img src="/images/stripe-amex.png" alt="PayPal">
+                                    <img src="/images/stripe-discover.png" alt="PayPal">
+                                    <img src="/images/stripe-mastercard.png" alt="PayPal">
+                                    <img src="/images/stripe-visa.png" alt="PayPal">
                                 </div>
                             </label>
                             <label for="three-method" class="box third">
@@ -98,8 +103,8 @@ $conn->close();
                                     <span class="yearly">Crypto Currency</span>
                                 </div>
                                 <div style="display: flex;">
-                                    <img src="../images/coinbase-btc.png" alt="PayPal">
-                                    <img src="../images/coinbase-eth.png" alt="PayPal">
+                                    <img src="/images/coinbase-btc.png" alt="PayPal">
+                                    <img src="/images/coinbase-eth.png" alt="PayPal">
                                 </div>
                             </label>
                             <label for="four-method" class="box four">
@@ -108,9 +113,9 @@ $conn->close();
                                     <span class="yearly">Debit/Credit, Apple Pay</span>
                                 </div>
                                 <div style="display: flex;">
-                                    <img src="../images/stripe-visa.png" alt="PayPal">
-                                    <img src="../images/stripe-mastercard.png" alt="PayPal">
-                                    <img src="../images/lex-apple.png" alt="PayPal">
+                                    <img src="/images/stripe-visa.png" alt="PayPal">
+                                    <img src="/images/stripe-mastercard.png" alt="PayPal">
+                                    <img src="/images/lex-apple.png" alt="PayPal">
                                 </div>
                             </label>
                             <label for="five-method" class="box last">
@@ -118,11 +123,11 @@ $conn->close();
                                     <span class="circle"></span>
                                     <span class="yearly">Balance</span>
                                 </div>
-                                <img src="../images/balance.png" alt="PayPal">
+                                <img src="/images/balance.png" alt="PayPal">
                             </label>
                             <div class="buy-price">
                                 <button type="submit" class="payment">Continue to Payment <span class="fa fa-arrow-right ml-2 mr-1"></span></button>
-                                <a href="/buy/info.php?id=<?php echo htmlspecialchars($randomUrl); ?>" style="text-decoration: none;">Cancel and go back to order</a>
+                                <a href="<?php echo htmlspecialchars($format); ?>" style="text-decoration: none;">Cancel and go back to order</a>
                             </div>
                         </form>
                     </div>

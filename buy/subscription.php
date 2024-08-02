@@ -2,6 +2,9 @@
 session_start();
 include '../system/config.php';
 
+// Define base URL
+$baseUrl = "http://localhost/"; // Adjust this if your project is in a subdirectory
+
 // Check if the connection was successful
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -36,7 +39,6 @@ if (isset($_GET['id'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,13 +47,12 @@ if (isset($_GET['id'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscription</title>
-    <link rel="stylesheet" href="assets/explore.css">
-    <link rel="stylesheet" href="../assets/nav.css">
+    <link rel="stylesheet" href="/assets/explore.css">
+    <link rel="stylesheet" href="/assets/nav.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <link rel="stylesheet" href="./products.css">
+    <link rel="stylesheet" href="/buy/products.css">
     <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
 </head>
 
 <style>
@@ -101,9 +102,9 @@ if (isset($_GET['id'])) {
                     <h1>Subscription</h1>
                 </div>
                 <div class="subscription-info">
-                    <a href=""><img src="../images/Logonetflix.png" alt="" class="sub-productlogo"></a>
+                    <a href=""><img src="/images/Logonetflix.png" alt="" class="sub-productlogo"></a>
                     <div class="subscription-text">
-                        <p><?php echo htmlspecialchars($order_randomUrl) ?></p><br>
+                        <p><?php echo htmlspecialchars($order_randomUrl); ?></p><br>
                         <a href="">
                             <h1 style="color: #007bff;">NETFLIX</h1><br>
                         </a>

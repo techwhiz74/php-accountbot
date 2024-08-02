@@ -74,7 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
             $orderStmt->close();
-            header("Location: /buy/order.php?id=$randomUrl");
+            $format = "/order/" . $randomUrl . "/pay";
+            header("Location: $format", true, 302);
             exit();
         } else {
             echo "Error inserting into orders: " . $stmt->error;

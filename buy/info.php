@@ -2,6 +2,9 @@
 session_start();
 include '../system/config.php';
 
+// Define base URL
+$baseUrl = "http://localhost/"; // Adjust this if your project is in a subdirectory
+
 // Check if the connection was successful
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -47,7 +50,6 @@ if (isset($_GET['id'])) {
 $conn->close();
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,10 +58,10 @@ $conn->close();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Plans</title>
-    <link rel="stylesheet" href="assets/explore.css">
-    <link rel="stylesheet" href="../assets/nav.css">
+    <link rel="stylesheet" href="/assets/explore.css">
+    <link rel="stylesheet" href="/assets/nav.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <link rel="stylesheet" href="products.css">
+    <link rel="stylesheet" href="/buy/products.css">
     <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -159,7 +161,7 @@ $conn->close();
                                     </td>
                                     <td>Unpaid</td>
                                     <td style="color: #28a745;">$<?php echo htmlspecialchars($order['cost']); ?></td>
-                                    <td><a href="/buy/subscription.php?id=<?php echo htmlspecialchars($order['id']); ?>" style="color: #007bff;"><i class="fa-solid fa-circle-info"></i></a></td>
+                                    <td><a href="<?php echo htmlspecialchars("/subscription/" . $order['id'] . "/info"); ?>" style="color: #007bff;"><i class="fa-solid fa-circle-info"></i></a></td>
                                 </tr>
                             <?php endforeach; ?>
                             <tr>
