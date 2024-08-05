@@ -121,7 +121,7 @@ $conn->close();
                <p>Unpaid</p><br>
             </div>
             <div>
-               <a href="/buy/subscription.php?id=<?php echo htmlspecialchars($order['id']); ?>"><button class="payment" style="width: 100%;">Get Account</button></a>
+               <a href="<?php echo htmlspecialchars("/subscription/" . $order['id'] . "/info"); ?>"><button class="payment" style="width: 100%;">Get Account</button></a>
             </div>
          </div>
       <?php endforeach; ?>

@@ -1,3 +1,39 @@
+<?php
+session_start();
+include '../system/config.php';
+
+// Define base URL
+$baseUrl = "http://localhost/"; // Adjust this if your project is in a subdirectory
+
+// Check if the connection was successful
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+$products = $conn->prepare("SELECT product_stock FROM products WHERE product_name = 'Netflix'");
+if ($products) {
+  $products->execute();
+  $result = $products->get_result();
+  $products_data = $result->fetch_all(MYSQLI_ASSOC);
+
+  // Check if data is available and loop through it
+  if (!empty($products_data)) {
+    foreach ($products_data as $product) {
+      $at_count = substr_count($product['product_stock'], '@');
+    }
+  } else {
+    echo "No data found.";
+  }
+
+  $products->close();
+} else {
+  $error_message = "Error preparing statement.";
+}
+
+$conn->close();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +69,11 @@
           <h3 class="title">Product Info:</h3>
           <h3 class="small">Bally Sports+ is a subscription streaming platform with live game telecasts, replays, studio programs, outdoor shows, and syndicated content from regional sports networks.</h3>
         </div>
-        <h3 class="title" style="color: #de1fea;">Select Plan <span class="stock">109 in stock</span></h3>
+        <?php if ($at_count == 0) : ?>
+          <h3 class="title" style="color: #de1fea;">Select Plan <span class="stock">OUT OF STOCK</span></h3>
+        <?php else : ?>
+          <h3 class="title" style="color: #de1fea;">Select Plan <span class="stock"><?php echo htmlspecialchars($at_count); ?> Stock</span></h3>
+        <?php endif ?>
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.14.0/css/all.css">
         <div class="selectcard">
           <div class="content">
@@ -94,18 +134,18 @@
   <script>
     document.getElementById('cartIcon').addEventListener('click', function(event) {
       event.preventDefault(); // Prevent default anchor behavior
-      
+
       var form = document.getElementById('productForm');
       var cartForm = document.getElementById('cartForm');
-      
+
       // Get selected plan and quantity from the main form
       var selectedPlan = form.querySelector('input[name="plan"]:checked').value;
       var productQty = form.querySelector('input[name="product-qty"]').value;
-      
+
       // Set values to hidden form fields
       document.getElementById('cartPlan').value = selectedPlan;
       document.getElementById('cartQty').value = productQty;
-      
+
       // Submit the hidden form
       cartForm.submit();
     });
