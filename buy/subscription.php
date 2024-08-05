@@ -133,7 +133,7 @@ if (isset($_GET['id'])) {
                     </div>
                 </div>
                 <div class="subscription-button">
-                    <a href="/buy/info.php?id=<?php echo htmlspecialchars($orders_id); ?>"><button class="payment"><i class="fa-solid fa-credit-card"></i> Order</button></a>
+                    <a href="<?php echo htmlspecialchars("/order/" . $orders_id . "/info"); ?>"><button class="payment"><i class="fa-solid fa-credit-card"></i> Order</button></a>
                     <a href=""><button class="support"><i class="fa-solid fa-life-ring"></i> Support</button></a>
                 </div>
             </div>

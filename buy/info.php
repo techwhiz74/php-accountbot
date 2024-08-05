@@ -111,7 +111,7 @@ $conn->close();
                 <div class="info">
                     <div class="shoeName order-info">
                         <h1>UNPAID</h1>
-                        <a href="/buy/order.php?id=<?php echo htmlspecialchars($randomUrl); ?>"><button class="payment"><i class="fa-solid fa-credit-card"></i> Process Payment</button></a>
+                        <a href="<?php echo htmlspecialchars("/order/" . $randomUrl . "/pay"); ?>"><button class="payment"><i class="fa-solid fa-credit-card"></i> Process Payment</button></a>
                     </div>
                     <h3>ID: <?php echo htmlspecialchars($randomUrl); ?></h3>
                     <h3 style="padding: 1rem 0;">Total: <span style="color: #28a745;">$<?php echo htmlspecialchars($total); ?></span></h3>
