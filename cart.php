@@ -1,15 +1,15 @@
 <?php
 session_start();
 
-require '../vendor/autoload.php'; // Make sure to include the Composer autoloader
+require 'vendor/autoload.php'; // Make sure to include the Composer autoloader
 
 use Ramsey\Uuid\Uuid;
 
-include '../system/config.php';
+include 'system/config.php';
 
 if (!isset($_SESSION['SESSION_EMAIL'])) {
     // Redirect to login page
-    header("Location: ../login.php");
+    header("Location: login.php");
     exit();
 }
 
@@ -132,10 +132,10 @@ $conn->close();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Plans</title>
-    <link rel="stylesheet" href="../assets/explore.css">
-    <link rel="stylesheet" href="../assets/nav.css">
+    <link rel="stylesheet" href="/assets/explore.css">
+    <link rel="stylesheet" href="/assets/nav.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <link rel="stylesheet" href="products.css">
+    <link rel="stylesheet" href="/buy/products.css">
     <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -247,12 +247,12 @@ $conn->close();
                         <?php endif; ?>
                     </table>
                     <div style="margin-top: 20px; float:right;">
-                        <a href="./add_cart.php" class="payment"><i class="fa-solid fa-cart-shopping"></i> Checkout</a>
+                        <a href="/buy/add_cart.php" class="payment"><i class="fa-solid fa-cart-shopping"></i> Checkout</a>
                     </div>
                 <?php else : ?>
                     <div style="margin-top: 50px; display:flex; justify-content:space-between;">
                         <h2>No cart</h2>
-                        <a href="./netflix.php" class="payment">Explore</a>
+                        <a href="/buy/netflix.php" class="payment">Explore</a>
                     </div>
                 <?php endif; ?>
 
@@ -266,7 +266,7 @@ $conn->close();
         });
     </script>
 
-    <?php require_once './menu2.php'; ?>
+    <?php require_once 'menu.php'; ?>
 </body>
 
 </html>

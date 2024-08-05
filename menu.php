@@ -45,7 +45,7 @@ include("./system/config.php");
             </a>
           </li>
           <li class="list">
-            <a href="/buy/cart.php" class="nav-link">
+            <a href="/cart.php" class="nav-link">
               <div class="uricon"> <i class='bx bx-cart icon'></i></div>
               <span class="link">Cart</span>
             </a>
